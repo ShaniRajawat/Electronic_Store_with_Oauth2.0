@@ -1,4 +1,4 @@
-package com.sr.electronic.store.Electronic_Store.helper;
+package com.sr.electronic.store.Electronic_Store.config;
 
 import com.sr.electronic.store.Electronic_Store.dtos.PageableResponse;
 import com.sr.electronic.store.Electronic_Store.dtos.UserDto;

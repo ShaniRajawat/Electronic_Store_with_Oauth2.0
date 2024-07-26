@@ -4,7 +4,7 @@ import com.sr.electronic.store.Electronic_Store.dtos.CategoryDtos;
 import com.sr.electronic.store.Electronic_Store.dtos.PageableResponse;
 import com.sr.electronic.store.Electronic_Store.entities.Category;
 import com.sr.electronic.store.Electronic_Store.exceptions.ResourceNOtFoundException;
-import com.sr.electronic.store.Electronic_Store.helper.Helper;
+import com.sr.electronic.store.Electronic_Store.config.Helper;
 import com.sr.electronic.store.Electronic_Store.repositories.CategoryRepository;
 import com.sr.electronic.store.Electronic_Store.services.CategoryService;
 import org.modelmapper.ModelMapper;

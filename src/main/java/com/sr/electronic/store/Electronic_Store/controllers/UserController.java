@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -35,6 +37,8 @@ import java.util.List;
 @Tag(name="UserController", description ="REST APIs related to perform user operations!!")
 public class UserController {
 
+    @Autowired
+    private ModelMapper modelMapper;
     @Autowired
     private UserService userService;
     @Autowired
@@ -133,5 +137,11 @@ public class UserController {
 
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<UserDto> getCurrentUser(Principal principal){
+        String name = principal.getName();
+        return new ResponseEntity<>(modelMapper.map(userService.getByUserId(name),UserDto.class), HttpStatus.OK);
     }
 }

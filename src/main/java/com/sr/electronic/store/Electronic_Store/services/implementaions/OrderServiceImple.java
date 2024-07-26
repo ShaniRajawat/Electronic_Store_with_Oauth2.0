@@ -7,7 +7,7 @@ import com.sr.electronic.store.Electronic_Store.dtos.PageableResponse;
 import com.sr.electronic.store.Electronic_Store.entities.*;
 import com.sr.electronic.store.Electronic_Store.exceptions.BadApiRequestException;
 import com.sr.electronic.store.Electronic_Store.exceptions.ResourceNOtFoundException;
-import com.sr.electronic.store.Electronic_Store.helper.Helper;
+import com.sr.electronic.store.Electronic_Store.config.Helper;
 import com.sr.electronic.store.Electronic_Store.repositories.CartRepository;
 import com.sr.electronic.store.Electronic_Store.repositories.OrderRepository;
 import com.sr.electronic.store.Electronic_Store.repositories.UserRepository;

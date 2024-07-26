@@ -5,7 +5,7 @@ import com.sr.electronic.store.Electronic_Store.dtos.UserDto;
 import com.sr.electronic.store.Electronic_Store.entities.Role;
 import com.sr.electronic.store.Electronic_Store.entities.User;
 import com.sr.electronic.store.Electronic_Store.exceptions.ResourceNOtFoundException;
-import com.sr.electronic.store.Electronic_Store.helper.Helper;
+import com.sr.electronic.store.Electronic_Store.config.Helper;
 import com.sr.electronic.store.Electronic_Store.repositories.RoleRepository;
 import com.sr.electronic.store.Electronic_Store.repositories.UserRepository;
 import com.sr.electronic.store.Electronic_Store.services.UserService;
@@ -43,8 +43,6 @@ public class UserServiceImpl implements UserService {
     private String imagePath;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Value("${normal.role.id}")
-    private String normalRoleId;
     @Autowired
     private RoleRepository roleRepository;
 
@@ -59,7 +57,7 @@ public class UserServiceImpl implements UserService {
         User user = dtoToEntity(userDto);
 
         //fetch of normal and set it to user
-        Role role = roleRepository.findById(normalRoleId).get();
+        Role role = roleRepository.findById("1").get();
         user.getRoles().add(role);
 
         User saveUser = userRepository.save(user);

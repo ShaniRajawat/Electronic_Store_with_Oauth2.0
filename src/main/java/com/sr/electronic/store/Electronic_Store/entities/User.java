@@ -36,8 +36,7 @@ public class User implements UserDetails {
     private List<Order> orders = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles")
-    @JoinColumn(name = "user_id")
+    @JoinTable(name = "user_roles",joinColumns = {@JoinColumn(name = "user_id")})
     private Set<Role> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "user",cascade = CascadeType.REMOVE)
