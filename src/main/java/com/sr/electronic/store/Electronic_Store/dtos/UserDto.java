@@ -1,7 +1,7 @@
 package com.sr.electronic.store.Electronic_Store.dtos;
 
 
-import com.sr.electronic.store.Electronic_Store.validate.ImageNameValid;
+//import com.sr.electronic.store.Electronic_Store.validate.ImageNameValid;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -37,7 +37,7 @@ public class UserDto {
         @NotBlank(message = "Write something about yourself")
         private String about;
 
-        @ImageNameValid
+//        @ImageNameValid
         private String imageName;
 
         private Set<RolesDto> roles = new HashSet<>();

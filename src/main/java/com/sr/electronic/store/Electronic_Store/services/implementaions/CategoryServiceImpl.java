@@ -67,17 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(String categoryId) {
         //get by Id first
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNOtFoundException("Category not found with Given Id !!"));
-        //delete Category cover image
-        String fullPath = imagePath + category.getCoverImage();
-        try {
-            Path path = Paths.get(fullPath);
-            Files.delete(path);
-        } catch (NoSuchFileException ex) {
-            logger.info("Category Cover Image not found in folder");
-            ex.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
         //delete user
         categoryRepository.deleteById(categoryId);
     }

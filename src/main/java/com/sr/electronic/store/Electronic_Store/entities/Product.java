@@ -19,7 +19,7 @@ public class Product {
     @Id
     private String productId;
     private String title;
-    @Column(length = 10000)
+    @Column(length = 100000)
     private String description;
     private int price;
     private int discountedPrice;

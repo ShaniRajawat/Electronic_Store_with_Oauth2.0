@@ -1,10 +1,7 @@
 package com.sr.electronic.store.Electronic_Store.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
@@ -19,6 +16,7 @@ import java.util.Set;
 @Table(name="roles")
 public class Role {
     @Id
+    @Column(name = "role_id")
     private String roleId;
     private String roleName;
 

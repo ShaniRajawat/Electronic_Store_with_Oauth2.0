@@ -7,11 +7,14 @@ import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,13 +28,24 @@ public class ResourceServerConfig {
 
     @Bean
     public SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(c->c.configurationSource(this.corsConfigurationSource()))
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"users/image/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/users/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/users").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/products/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/products/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/categories").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/products/image/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/products","/products/live","/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/categories").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/categories/*/products").permitAll()
                         .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2->oauth2.jwt(j->j.decoder(this.jwtDecoder())));
+                .oauth2ResourceServer(oauth2->oauth2.jwt(j->j.decoder(this.jwtDecoder())))
+                .exceptionHandling(ex->ex.accessDeniedHandler(new AccessDeniedHandlerImpl()))
+                .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
@@ -71,7 +85,7 @@ public class ResourceServerConfig {
 
     @Bean
     public JwtDecoder jwtDecoder(){
-        return NimbusJwtDecoder.withJwkSetUri("http://localhost:8081/oauth2/jwks").build();
+        return NimbusJwtDecoder.withJwkSetUri("http://localhost:9091/oauth2/jwks").build();
     }
 
 }

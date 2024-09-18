@@ -54,6 +54,7 @@ public class UserController {
         UserDto userDto1 = userService.createUser(userDto);
         return new ResponseEntity<>(userDto1, HttpStatus.CREATED);
     }
+
     //update
     @PutMapping("/{userId}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("userId") String userId,
@@ -142,6 +143,7 @@ public class UserController {
     @GetMapping("/current")
     public ResponseEntity<UserDto> getCurrentUser(Principal principal){
         String name = principal.getName();
-        return new ResponseEntity<>(modelMapper.map(userService.getByUserId(name),UserDto.class), HttpStatus.OK);
+        logger.info("name {}" , name);
+        return new ResponseEntity<>(modelMapper.map(userService.getUserByEmail(name),UserDto.class), HttpStatus.OK);
     }
 }

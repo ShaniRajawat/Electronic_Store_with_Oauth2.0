@@ -26,9 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -57,8 +55,10 @@ public class UserServiceImpl implements UserService {
         User user = dtoToEntity(userDto);
 
         //fetch of normal and set it to user
-        Role role = roleRepository.findById("1").get();
-        user.getRoles().add(role);
+        Role role = roleRepository.findById("2").get();
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(role);
+        user.setRoles(roleSet);
 
         User saveUser = userRepository.save(user);
 
@@ -72,7 +72,9 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNOtFoundException("No User is Registered with the given ID"));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        if(!userDto.getPassword().equalsIgnoreCase(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
         user.setGender(userDto.getGender());
         user.setAbout(userDto.getAbout());
         user.setImageName(userDto.getImageName());
